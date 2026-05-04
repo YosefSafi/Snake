@@ -42,5 +42,38 @@ def list():
 
     console.print(table)
 
+@main.command()
+@click.argument("job_id", type=int)
+@click.argument("status")
+def status(job_id, status):
+    """Update the status of a job (e.g., 'Applied', 'Rejected')."""
+    engine = JobSearchEngine()
+    if engine.update_job_status(job_id, status):
+        console.print(f"[green]Job {job_id} status updated to '{status}'.[/green]")
+    else:
+        console.print(f"[red]Job {job_id} not found.[/red]")
+
+@main.command()
+@click.argument("job_id", type=int)
+def detail(job_id):
+    """Show detailed information for a specific job."""
+    engine = JobSearchEngine()
+    job = engine.get_job(job_id)
+    if not job:
+        console.print(f"[red]Job {job_id} not found.[/red]")
+        return
+
+    console.print(f"[bold cyan]Job Details (ID: {job.id})[/bold cyan]")
+    console.print(f"Title: {job.title}")
+    console.print(f"Company: {job.company}")
+    console.print(f"Location: {job.location}")
+    console.print(f"Link: {job.link}")
+    console.print(f"Source: {job.source}")
+    console.print(f"Status: {job.status}")
+    console.print(f"Match Score: {job.match_score or 'N/A'}")
+    console.print(f"Last Checked: {job.last_checked}")
+    console.print("-" * 20)
+    console.print(f"Description:\n{job.description or 'No description available.'}")
+
 if __name__ == "__main__":
     main()
