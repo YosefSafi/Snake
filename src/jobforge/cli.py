@@ -151,5 +151,31 @@ def generate_letter(job_id, profile):
     console.print("-" * 20)
     console.print(letter)
 
+@main.command()
+@click.option("--threshold", default=20.0, help="Minimum match score to include")
+def digest(threshold):
+    """Show a daily digest of top matching jobs."""
+    engine = JobSearchEngine()
+    jobs = engine.list_jobs()
+    
+    top_jobs = [j for j in jobs if j.match_score is not None and j.match_score >= threshold]
+    top_jobs.sort(key=lambda x: x.match_score, reverse=True)
+    
+    if not top_jobs:
+        console.print(f"[yellow]No jobs found with match score >= {threshold}%.[/yellow]")
+        return
+
+    console.print(f"[bold green]Daily Job Digest (Top Matches >= {threshold}%)[/bold green]")
+    table = Table()
+    table.add_column("Match %", style="bold yellow")
+    table.add_column("Title", style="magenta")
+    table.add_column("Company", style="green")
+    table.add_column("Link")
+
+    for job in top_jobs:
+        table.add_row(f"{job.match_score}%", job.title, job.company, job.link)
+
+    console.print(table)
+
 if __name__ == "__main__":
     main()
