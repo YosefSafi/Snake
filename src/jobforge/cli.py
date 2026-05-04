@@ -2,6 +2,7 @@ import click
 import logging
 from jobforge.db.session import init_db
 from jobforge.search.engine import JobSearchEngine
+from jobforge.search.scraper import JobScraper
 from rich.console import Console
 from rich.table import Table
 
@@ -74,6 +75,20 @@ def detail(job_id):
     console.print(f"Last Checked: {job.last_checked}")
     console.print("-" * 20)
     console.print(f"Description:\n{job.description or 'No description available.'}")
+
+@main.command()
+@click.argument("job_id", type=int)
+def fetch_desc(job_id):
+    """Fetch and save the description for a specific job."""
+    engine = JobSearchEngine()
+    job = engine.get_job(job_id)
+    if not job:
+        console.print(f"[red]Job {job_id} not found.[/red]")
+        return
+    
+    console.print(f"[bold blue]Fetching description for Job {job_id}: {job.link}...[/bold blue]")
+    # The Agent will now use WebFetch based on this intent.
+    console.print("Please wait for the Agent to fetch the content...")
 
 if __name__ == "__main__":
     main()
