@@ -1,0 +1,55 @@
+{
+    "name": "Yosef Safi",
+    "email": "Yosefsafi@hotmail.com",
+    "phone": "076-053 65 57",
+    "summary": "IT developer specialized in .NET and Cloud, with a strong focus on solving problems and building stable, well functioning solutions. Experienced in C#, databases, APIs, and Azure, with solid skills in both frontend and backend development.",
+    "skills": [
+        ".NET",
+        "C#",
+        "Azure",
+        "Blazor",
+        "Python",
+        "Javascript",
+        "HTML",
+        "CSS",
+        "Git",
+        "Github",
+        "SQL Server",
+        "Entity Framework Core",
+        "MongoDB",
+        "Node",
+        "Agile",
+        "API Integration",
+        "AI prompting",
+        "LLM specialist",
+        "AI agents"
+    ],
+    "experience": [
+        {
+            "role": "Data AI Annotation",
+            "company": "Koikco",
+            "period": "Februari 2025 - PÅGÅENDE"
+        },
+        {
+            "role": "Cloud teamleader",
+            "company": "Podmanager",
+            "period": "September 2025 - November 2025",
+            "details": "Led a team of 5 people by introducing best practices in Azure and DevOps."
+        },
+        {
+            "role": "Bemanningskonsult",
+            "company": "Jovi",
+            "period": "Januari 2024 - Januari 2025"
+        }
+    ],
+    "education": [
+        {
+            "degree": ".NET Cloud Developer",
+            "institution": "IT-Högskolan, Göteborg"
+        },
+        {
+            "degree": "Computer Science (CS50)",
+            "institution": "Harvard University"
+        }
+    ]
+}
