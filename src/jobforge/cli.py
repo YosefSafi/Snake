@@ -6,6 +6,7 @@ from jobforge.db.session import init_db
 from jobforge.search.engine import JobSearchEngine
 from jobforge.search.scraper import JobScraper
 from jobforge.search.matcher import MatchEngine
+from jobforge.application.helper import ApplicationHelper
 from rich.console import Console
 from rich.table import Table
 
@@ -120,6 +121,35 @@ def fetch_desc(job_id):
     
     console.print(f"[bold blue]Fetching description for Job {job_id}: {job.link}...[/bold blue]")
     console.print("Please wait for the Agent to fetch the content...")
+
+@main.command()
+@click.argument("job_id", type=int)
+@click.option("--profile", default="profile.json", help="Path to profile JSON")
+def generate_letter(job_id, profile):
+    """Generate a tailored cover letter for a job."""
+    if not os.path.exists(profile):
+        console.print(f"[red]Profile file {profile} not found.[/red]")
+        return
+    
+    with open(profile, "r") as f:
+        profile_data = json.load(f)
+    
+    engine = JobSearchEngine()
+    job = engine.get_job(job_id)
+    if not job:
+        console.print(f"[red]Job {job_id} not found.[/red]")
+        return
+    
+    helper = ApplicationHelper(profile_data)
+    letter = helper.generate_cover_letter(job.title, job.company, job.description or "")
+    
+    filename = f"cover_letter_job_{job_id}.md"
+    with open(filename, "w", encoding="utf-8") as f:
+        f.write(letter)
+    
+    console.print(f"[bold green]Cover letter generated successfully: {filename}[/bold green]")
+    console.print("-" * 20)
+    console.print(letter)
 
 if __name__ == "__main__":
     main()
